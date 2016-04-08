@@ -24,6 +24,7 @@ protected:
 	int num_of_objects;
 	CPoint m_MousePos;
 	int m_nCatched;
+	int m_nRightClicked;
 
 // Операции
 public:
@@ -50,5 +51,9 @@ public:
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 
 	afx_msg void OnNewFigure();
+	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
+	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnPopupEdit();
+	afx_msg void OnPopupRemove();
 };
 

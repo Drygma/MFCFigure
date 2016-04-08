@@ -14,12 +14,13 @@
     <ProjectGuid>{734895E6-51E7-4E43-BC84-C908F47E42FB}</ProjectGuid>
     <RootNamespace>MFCFigure</RootNamespace>
     <Keyword>MFCProj</Keyword>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
@@ -100,6 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChildView.h" />
+    <ClInclude Include="DlgProperties.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="MFCFigure.h" />
     <ClInclude Include="My2DObjectA6.h" />
@@ -110,6 +112,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChildView.cpp" />
+    <ClCompile Include="DlgProperties.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="MFCFigure.cpp" />
     <ClCompile Include="My2DObjectA6.cpp" />

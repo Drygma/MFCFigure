@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "MFCFigure.h"
 #include "ChildView.h"
+#include "DlgProperties.h"
 #include <math.h>
 
 #ifdef _DEBUG
@@ -20,7 +21,9 @@ int Ny(double x, double y, double fangle, double c_x, double c_y);
 
 CChildView::CChildView()
 {
-	m_nCatched = -1; // Initialization
+	// Initialization
+	m_nCatched = -1;
+	m_nRightClicked = -1;
 	num_of_objects = 0;
 }
 
@@ -41,6 +44,10 @@ BEGIN_MESSAGE_MAP(CChildView, CWnd)
 	ON_WM_MOUSEWHEEL()
 	ON_WM_ERASEBKGND()
 	ON_COMMAND(ID_NEWFIGURE, OnNewFigure)
+	ON_WM_LBUTTONDBLCLK()
+	ON_WM_RBUTTONUP()
+	ON_COMMAND(ID_POPUP_EDIT, &CChildView::OnPopupEdit)
+	ON_COMMAND(ID_POPUP_REMOVE, &CChildView::OnPopupRemove)
 END_MESSAGE_MAP()
 
 
@@ -76,8 +83,17 @@ void CChildView::OnPaint()
 		m_Objects[i]->Draw(dcMem); // рисуем каждый объект в память
 	}
 
+	// Показываем количество объектов
 	CString str;
 	str.Format(_T("Number of objects: %d\n"), num_of_objects);
+	if (m_nCatched >= 0) // Если схватили объект, то показываем еще и координаты
+	{
+		CString str1;
+		str1.Format(_T("Dragging object... (X: %.0lf | Y: %.0lf)"), 
+			m_Objects[m_nCatched]->GetCenter().GetX(), m_Objects[m_nCatched]->GetCenter().GetY());
+		str += str1;
+	}
+	// Рисуем текст в правом верхнем углу
 	dcMem.DrawText(str, rect, DT_RIGHT);
 
 	dc.BitBlt(0, 0, rect.Width(), rect.Height(), &dcMem, 0, 0, SRCCOPY);
@@ -117,6 +133,7 @@ void CChildView::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	m_nCatched = -1;
 	ReleaseCapture();
+	Invalidate();
 	CWnd::OnLButtonUp(nFlags, point);
 }
 
@@ -153,4 +170,105 @@ int CChildView::FindObject(CPoint point) {
 		}
 	}
 	return nObj;
+}
+
+void CChildView::OnLButtonDblClk(UINT nFlags, CPoint point)
+{
+	m_nCatched = FindObject(point);
+	if (m_nCatched >= 0) {
+		// При двойном щелчке по объекту, открываем окно редактирования параметров
+		CMy2DObjectA6 *selected_object = m_Objects[m_nCatched];
+		CDlgProperties dlg(
+			NULL, 
+			selected_object->GetCenter().GetX(), 
+			selected_object->GetCenter().GetY(),
+			selected_object->GetA(),
+			selected_object->GetA1(),
+			selected_object->GetA2(),
+			selected_object->GetA3(),
+			selected_object->GetAngle());
+		if (dlg.DoModal() == IDH_OK)
+		{	// Если пользователь нажал ОК, то меняем параметры фигуры и отрисовываем
+			int oldX = selected_object->GetCenter().GetX();
+			int oldY = selected_object->GetCenter().GetY();
+			double oldAngle = selected_object->GetAngle();
+
+			selected_object->Move(dlg.m_nX - oldX, dlg.m_nY - oldY, dlg.m_dAngle - oldAngle);
+			selected_object->SetA(dlg.m_dA);
+			selected_object->SetA1(dlg.m_dA1);
+			selected_object->SetA2(dlg.m_dA2);
+			selected_object->SetA3(dlg.m_dA3);
+
+			Invalidate();
+		}
+		m_nCatched = -1;
+	}
+
+	CWnd::OnLButtonDblClk(nFlags, point);
+}
+
+
+void CChildView::OnRButtonUp(UINT nFlags, CPoint point)
+{
+	m_nRightClicked = FindObject(point);
+	if (m_nRightClicked >= 0) {
+		// При щелчке ПКМ по объекту, показываем контекстное меню
+		CMenu menuFigure;
+		menuFigure.LoadMenu(IDR_FIGURE_MENU);
+
+		CMenu *mnuPopupMenu = menuFigure.GetSubMenu(0);
+		ASSERT(mnuPopupMenu);
+
+		CPoint p;
+		GetCursorPos(&p);
+
+		mnuPopupMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON, p.x, p.y, this);
+	}
+
+	CWnd::OnRButtonUp(nFlags, point);
+}
+
+
+void CChildView::OnPopupEdit()
+{
+	if (m_nRightClicked >= 0) {
+		// При щелчке по кнопке Edit, открываем окно редактирования параметров
+		CMy2DObjectA6 *selected_object = m_Objects[m_nRightClicked];
+		CDlgProperties dlg(
+			NULL,
+			selected_object->GetCenter().GetX(),
+			selected_object->GetCenter().GetY(),
+			selected_object->GetA(),
+			selected_object->GetA1(),
+			selected_object->GetA2(),
+			selected_object->GetA3(),
+			selected_object->GetAngle());
+		if (dlg.DoModal())
+		{
+			int oldX = selected_object->GetCenter().GetX();
+			int oldY = selected_object->GetCenter().GetY();
+			double oldAngle = selected_object->GetAngle();
+
+			selected_object->Move(dlg.m_nX - oldX, dlg.m_nY - oldY, dlg.m_dAngle - oldAngle);
+			selected_object->SetA(dlg.m_dA);
+			selected_object->SetA1(dlg.m_dA1);
+			selected_object->SetA2(dlg.m_dA2);
+			selected_object->SetA3(dlg.m_dA3);
+
+			Invalidate();
+		}
+		m_nRightClicked = -1;
+	}
+}
+
+
+void CChildView::OnPopupRemove()
+{
+	if (m_nRightClicked >= 0) {
+		// При щелчке по кнопке Remove, удаляем объект и перерисовываем
+		m_Objects.erase(m_Objects.begin() + m_nRightClicked);
+		num_of_objects--;
+		Invalidate();
+		m_nRightClicked = -1;
+	}
 }

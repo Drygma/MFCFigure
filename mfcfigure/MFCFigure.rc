@@ -70,6 +70,7 @@ END
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "res\\MFCFigure.ico"
 
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // Menu
@@ -92,6 +93,15 @@ BEGIN
     POPUP "&Справка"
     BEGIN
         MENUITEM "&О проекте MFCFigure...",     ID_APP_ABOUT
+    END
+END
+
+IDR_FIGURE_MENU MENU
+BEGIN
+    POPUP "POPUP_FIGURE"
+    BEGIN
+        MENUITEM "Edit",                        ID_POPUP_EDIT
+        MENUITEM "Remove",                      ID_POPUP_REMOVE
     END
 END
 
@@ -132,14 +142,27 @@ BEGIN
     DEFPUSHBUTTON   "ОК",IDOK,113,41,50,14,WS_GROUP
 END
 
-IDD_PROPERTIES DIALOGEX 0, 0, 339, 181
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+IDD_PROPERTIES DIALOGEX 0, 0, 208, 147
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Edit properties"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
+FONT 11, "Microsoft Sans Serif", 400, 0, 0xCC
 BEGIN
-    DEFPUSHBUTTON   "ОК",IDOK,224,160,50,14
-    PUSHBUTTON      "Отмена",IDCANCEL,282,160,50,14
-    LTEXT           "Статический",IDC_STATIC,7,15,45,8
+    DEFPUSHBUTTON   "ОК",IDOK,122,126,35,14
+    PUSHBUTTON      "Отмена",IDCANCEL,167,126,34,14
+    LTEXT           "X:",IDC_STATIC,25,13,8,8
+    LTEXT           "Y:",IDC_STATIC,25,27,8,8
+    LTEXT           "A:",IDC_STATIC,25,40,8,8
+    LTEXT           "A1:",IDC_STATIC,22,55,12,8
+    LTEXT           "A2:",IDC_STATIC,22,69,10,8
+    LTEXT           "A3:",IDC_STATIC,22,84,13,8
+    LTEXT           "Angle:",IDC_STATIC,13,97,21,8
+    EDITTEXT        IDC_E_X,32,11,43,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_E_A2,32,68,43,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_E_A,32,39,43,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_E_A1,32,53,43,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_E_A3,32,82,43,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_E_Y,32,25,43,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_E_ANG,32,96,43,12,ES_AUTOHSCROLL
 END
 
 
@@ -201,9 +224,9 @@ BEGIN
     IDD_PROPERTIES, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 332
+        RIGHTMARGIN, 201
         TOPMARGIN, 6
-        BOTTOMMARGIN, 174
+        BOTTOMMARGIN, 140
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -226,6 +249,7 @@ END
 //
 
 IDR_TOOLBAR1            BITMAP                  "res\\toolbar1.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
