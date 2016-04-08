@@ -70,7 +70,6 @@ END
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "res\\MFCFigure.ico"
 
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // Menu
@@ -133,6 +132,16 @@ BEGIN
     DEFPUSHBUTTON   "ОК",IDOK,113,41,50,14,WS_GROUP
 END
 
+IDD_PROPERTIES DIALOGEX 0, 0, 339, 181
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Edit properties"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "ОК",IDOK,224,160,50,14
+    PUSHBUTTON      "Отмена",IDCANCEL,282,160,50,14
+    LTEXT           "Статический",IDC_STATIC,7,15,45,8
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -188,6 +197,14 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 55
     END
+
+    IDD_PROPERTIES, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 332
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 174
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -209,7 +226,6 @@ END
 //
 
 IDR_TOOLBAR1            BITMAP                  "res\\toolbar1.bmp"
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
