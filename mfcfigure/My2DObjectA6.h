@@ -20,12 +20,12 @@ public:
 	CMy2DPoint GetCenter() const;
 	double GetAngle() const;
 
-	void SetA(double a);
-	void SetA1(double A1);
-	void SetA2(double A2);
-	void SetA3(double A3);
-	void SetCenter(const CMy2DPoint& center);
-	void SetAngle(double angle);
+	int SetA(double a);
+	int SetA1(double A1);
+	int SetA2(double A2);
+	int SetA3(double A3);
+	int SetCenter(const CMy2DPoint& center);
+	int SetAngle(double angle);
 
 	// Смещение объекта на вектор dX, dY и поворот на dAngle
 	void Move(double dX, double dY, double dAngle = 0);

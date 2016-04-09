@@ -176,31 +176,46 @@ void CChildView::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
 	m_nCatched = FindObject(point);
 	if (m_nCatched >= 0) {
+		bool OK = false;
 		// При двойном щелчке по объекту, открываем окно редактирования параметров
-		CMy2DObjectA6 *selected_object = m_Objects[m_nCatched];
-		CDlgProperties dlg(
-			NULL, 
-			selected_object->GetCenter().GetX(), 
-			selected_object->GetCenter().GetY(),
-			selected_object->GetA(),
-			selected_object->GetA1(),
-			selected_object->GetA2(),
-			selected_object->GetA3(),
-			selected_object->GetAngle());
-		if (dlg.DoModal() == IDH_OK)
-		{	// Если пользователь нажал ОК, то меняем параметры фигуры и отрисовываем
-			int oldX = selected_object->GetCenter().GetX();
-			int oldY = selected_object->GetCenter().GetY();
-			double oldAngle = selected_object->GetAngle();
+		while (!OK)
+		{
+			if (OK) break;
 
-			selected_object->Move(dlg.m_nX - oldX, dlg.m_nY - oldY, dlg.m_dAngle - oldAngle);
-			selected_object->SetA(dlg.m_dA);
-			selected_object->SetA1(dlg.m_dA1);
-			selected_object->SetA2(dlg.m_dA2);
-			selected_object->SetA3(dlg.m_dA3);
+			CMy2DObjectA6 *selected_object = m_Objects[m_nCatched];
+			CDlgProperties dlg(
+				NULL,
+				selected_object->GetCenter().GetX(),
+				selected_object->GetCenter().GetY(),
+				selected_object->GetA(),
+				selected_object->GetA1(),
+				selected_object->GetA2(),
+				selected_object->GetA3(),
+				selected_object->GetAngle());
+			dlg.DoModal();
+			if (dlg.OK)
+			{	// Если пользователь нажал ОК, то меняем параметры фигуры и отрисовываем
+				int oldX = selected_object->GetCenter().GetX();
+				int oldY = selected_object->GetCenter().GetY();
+				double oldAngle = selected_object->GetAngle();
 
-			Invalidate();
-		}
+				selected_object->Move(dlg.m_nX - oldX, dlg.m_nY - oldY, dlg.m_dAngle - oldAngle);
+				// Если ошибка при изменении параметра, то вызываем окно еще раз
+				if (selected_object->SetA1(dlg.m_dA1))
+					continue;
+				if (selected_object->SetA2(dlg.m_dA2))
+					continue;
+				if (selected_object->SetA3(dlg.m_dA3))
+					continue;
+				if (selected_object->SetA(dlg.m_dA))
+					continue;
+
+				OK = true;
+				Invalidate();
+			}
+			else
+				OK = true;
+		}	
 		m_nCatched = -1;
 	}
 
@@ -232,30 +247,45 @@ void CChildView::OnRButtonUp(UINT nFlags, CPoint point)
 void CChildView::OnPopupEdit()
 {
 	if (m_nRightClicked >= 0) {
+		bool OK = false;
 		// При щелчке по кнопке Edit, открываем окно редактирования параметров
-		CMy2DObjectA6 *selected_object = m_Objects[m_nRightClicked];
-		CDlgProperties dlg(
-			NULL,
-			selected_object->GetCenter().GetX(),
-			selected_object->GetCenter().GetY(),
-			selected_object->GetA(),
-			selected_object->GetA1(),
-			selected_object->GetA2(),
-			selected_object->GetA3(),
-			selected_object->GetAngle());
-		if (dlg.DoModal())
+		while (!OK)
 		{
-			int oldX = selected_object->GetCenter().GetX();
-			int oldY = selected_object->GetCenter().GetY();
-			double oldAngle = selected_object->GetAngle();
+			if (OK) break;
 
-			selected_object->Move(dlg.m_nX - oldX, dlg.m_nY - oldY, dlg.m_dAngle - oldAngle);
-			selected_object->SetA(dlg.m_dA);
-			selected_object->SetA1(dlg.m_dA1);
-			selected_object->SetA2(dlg.m_dA2);
-			selected_object->SetA3(dlg.m_dA3);
+			CMy2DObjectA6 *selected_object = m_Objects[m_nRightClicked];
+			CDlgProperties dlg(
+				NULL,
+				selected_object->GetCenter().GetX(),
+				selected_object->GetCenter().GetY(),
+				selected_object->GetA(),
+				selected_object->GetA1(),
+				selected_object->GetA2(),
+				selected_object->GetA3(),
+				selected_object->GetAngle());
+			dlg.DoModal();
+			if (dlg.OK)
+			{
+				int oldX = selected_object->GetCenter().GetX();
+				int oldY = selected_object->GetCenter().GetY();
+				double oldAngle = selected_object->GetAngle();
 
-			Invalidate();
+				selected_object->Move(dlg.m_nX - oldX, dlg.m_nY - oldY, dlg.m_dAngle - oldAngle);
+				// Если ошибка при изменении параметра, то вызываем окно еще раз
+				if (selected_object->SetA1(dlg.m_dA1))
+					continue;
+				if (selected_object->SetA2(dlg.m_dA2))
+					continue;
+				if (selected_object->SetA3(dlg.m_dA3))
+					continue;
+				if (selected_object->SetA(dlg.m_dA))
+					continue;
+
+				OK = true;
+				Invalidate();
+			}
+			else
+				OK = true;
 		}
 		m_nRightClicked = -1;
 	}

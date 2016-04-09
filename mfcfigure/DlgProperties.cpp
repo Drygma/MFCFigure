@@ -21,6 +21,7 @@ CDlgProperties::CDlgProperties(CWnd* pParent /*=NULL*/, int nX, int nY,
 	, m_dA2(dA2)
 	, m_dA3(dA3)
 	, m_dAngle(dAngle)
+	, OK(false)
 {
 
 }
@@ -43,6 +44,8 @@ void CDlgProperties::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CDlgProperties, CDialogEx)
+	ON_BN_CLICKED(IDOK, &CDlgProperties::OnBnClickedOk)
+	ON_BN_CLICKED(IDCANCEL, &CDlgProperties::OnBnClickedCancel)
 END_MESSAGE_MAP()
 
 BOOL CDlgProperties::OnInitDialog()
@@ -74,4 +77,18 @@ BOOL CDlgProperties::OnInitDialog()
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // Исключение: страница свойств OCX должна возвращать значение FALSE
+}
+
+
+void CDlgProperties::OnBnClickedOk()
+{
+	OK = true;
+	CDialogEx::OnOK();
+}
+
+
+void CDlgProperties::OnBnClickedCancel()
+{
+	OK = false;
+	CDialogEx::OnCancel();
 }

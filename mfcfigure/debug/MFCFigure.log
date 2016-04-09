@@ -1,9 +1,2 @@
-﻿  ChildView.cpp
-f:\users\stas\documents\github\mfcfigure\mfcfigure\childview.cpp(82): warning C4018: <: несоответствие типов со знаком и без знака
-f:\users\stas\documents\github\mfcfigure\mfcfigure\childview.cpp(186): warning C4244: аргумент: преобразование "double" в "int", возможна потеря данных
-f:\users\stas\documents\github\mfcfigure\mfcfigure\childview.cpp(189): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-f:\users\stas\documents\github\mfcfigure\mfcfigure\childview.cpp(190): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-f:\users\stas\documents\github\mfcfigure\mfcfigure\childview.cpp(240): warning C4244: аргумент: преобразование "double" в "int", возможна потеря данных
-f:\users\stas\documents\github\mfcfigure\mfcfigure\childview.cpp(243): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-f:\users\stas\documents\github\mfcfigure\mfcfigure\childview.cpp(244): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
+﻿  DlgProperties.cpp
   MFCFigure.vcxproj -> F:\Users\Stas\Documents\GitHub\MFCFigure\Debug\MFCFigure.exe

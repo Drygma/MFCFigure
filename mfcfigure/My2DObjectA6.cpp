@@ -60,43 +60,61 @@ double CMy2DObjectA6::GetA3() const { return A3; }
 CMy2DPoint CMy2DObjectA6::GetCenter() const { return m_Center; }
 double CMy2DObjectA6::GetAngle() const { return m_dAngle; }
 
-void CMy2DObjectA6::SetA(double a)
+int CMy2DObjectA6::SetA(double a)
 {
-	if(a <= A1 + A2 + A3)
+	if (a <= A1 + A2 + A3)
+	{
 		cout << "Unable to set A to '" << a << "'. Too small.";
+		return -1;
+	}
 	else
 		A = a;
+	return 0;
 }
-void CMy2DObjectA6::SetA1(double a1)
+int CMy2DObjectA6::SetA1(double a1)
 {
-	if(a1 >= A/2)
+	if (a1 >= A / 2)
+	{
 		cout << "Unable to set A1 to '" << a1 << "'. Too big.";
+		return -1;
+	}
 	else
 		A1 = a1;
+	return 0;
 }
-void CMy2DObjectA6::SetA2(double a2)
+int CMy2DObjectA6::SetA2(double a2)
 {
-	if(a2 >= A/2)
+	if (a2 >= A / 2)
+	{
 		cout << "Unable to set A2 to '" << a2 << "'. Too big.";
+		return -1;
+	}
 	else
 		A2 = a2;
+	return 0;
 }
-void CMy2DObjectA6::SetA3(double a3)
+int CMy2DObjectA6::SetA3(double a3)
 {
-	if(a3 >= A/2)
+	if (a3 >= A / 2)
+	{
 		cout << "Unable to set A3 to '" << a3 << "'. Too big.";
+		return -1;
+	}
 	else
 		A3 = a3;
+	return 0;
 }
-void CMy2DObjectA6::SetCenter(const CMy2DPoint& center)
+int CMy2DObjectA6::SetCenter(const CMy2DPoint& center)
 {
 	m_Center = center;
+	return 0;
 }
-void CMy2DObjectA6::SetAngle(double angle)
+int CMy2DObjectA6::SetAngle(double angle)
 {
 	m_dAngle = angle;
 	if (m_dAngle >= 360)
 		m_dAngle = m_dAngle - (int)(m_dAngle / 360) * 360;
+	return 0;
 }
 
 void CMy2DObjectA6::Move(double dX, double dY, double dAngle)
