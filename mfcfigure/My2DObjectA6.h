@@ -7,6 +7,7 @@ class CMy2DObjectA6
 	double A, A1, A2, A3;
 	CMy2DPoint m_Center;
 	double m_dAngle;
+	int r, g, b;
 public:
 	CMy2DObjectA6(void);
 	CMy2DObjectA6(double a, double a1, double a2, double a3, const CMy2DPoint& center, double m_Angle);
@@ -26,6 +27,7 @@ public:
 	int SetA3(double A3);
 	int SetCenter(const CMy2DPoint& center);
 	int SetAngle(double angle);
+	int SetColor(int R, int G, int B);
 
 	// Смещение объекта на вектор dX, dY и поворот на dAngle
 	void Move(double dX, double dY, double dAngle = 0);

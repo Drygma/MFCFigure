@@ -8,12 +8,12 @@ using namespace std;
 
 #define PI 3.14159265
 
-CMy2DObjectA6::CMy2DObjectA6(void):A(400),A1(100),A2(100),A3(100), m_dAngle(0)
+CMy2DObjectA6::CMy2DObjectA6(void):A(400),A1(100),A2(100),A3(100),m_dAngle(0),r(0),g(0),b(0)
 {
 	m_Center = CMy2DPoint(300, 300);
 }
 
-CMy2DObjectA6::CMy2DObjectA6(double a, double a1, double a2, double a3, const CMy2DPoint& center, double angle)
+CMy2DObjectA6::CMy2DObjectA6(double a, double a1, double a2, double a3, const CMy2DPoint& center, double angle): r(0), g(0), b(0)
 {
 	if (a <= a1 + a2 + a3 || a1 >= a / 2 || a2 >= a / 2 || a3 >= a / 2)
 	{
@@ -30,7 +30,7 @@ CMy2DObjectA6::CMy2DObjectA6(double a, double a1, double a2, double a3, const CM
 	}
 }
 
-CMy2DObjectA6::CMy2DObjectA6(double a, double a1, double a2, double a3, double x, double y, double angle)
+CMy2DObjectA6::CMy2DObjectA6(double a, double a1, double a2, double a3, double x, double y, double angle) : r(0), g(0), b(0)
 {
 	if (a <= a1 + a2 + a3 || a1 >= a / 2 || a2 >= a / 2 || a3 >= a / 2)
 	{
@@ -117,6 +117,14 @@ int CMy2DObjectA6::SetAngle(double angle)
 	return 0;
 }
 
+int CMy2DObjectA6::SetColor(int R, int G, int B)
+{
+	if (R < 0 || R > 255 || G < 0 || G > 255 || B < 0 || B > 255)
+		return -1;
+	r = R; g = G; b = B;
+	return 0;
+}
+
 void CMy2DObjectA6::Move(double dX, double dY, double dAngle)
 {
 	CMy2DPoint new_center(m_Center.GetX() + dX, m_Center.GetY() + dY);	
@@ -199,6 +207,13 @@ int Ny(double x, double y, double fangle, double c_x, double c_y)
 
 void CMy2DObjectA6::Draw(CDC &dc)
 {
+	// Ручка для границы
+	CPen pen(BS_SOLID, 0, RGB(r, g, b));
+	CPen *pPen = (&dc)->SelectObject(&pen);
+	// Кисть для заливки
+	CBrush brush(RGB(r, g, b));
+	CBrush *pBrush = (&dc)->SelectObject(&brush);
+
 	double fangle = -(double)m_dAngle / 180 * PI;
 
 	double x = m_Center.GetX() + A / 2;
@@ -236,4 +251,8 @@ void CMy2DObjectA6::Draw(CDC &dc)
 	x = m_Center.GetX() + A / 2;
 	y = m_Center.GetY() - A / 2;
 	dc.LineTo(Nx(x, y, fangle, m_Center.GetX(), m_Center.GetY()), Ny(x, y, fangle, m_Center.GetX(), m_Center.GetY()));
+
+	// Закраска фигуры
+	ExtFloodFill(dc, m_Center.GetX(), m_Center.GetY(), RGB(r, g, b), FLOODFILLBORDER);
+
 }

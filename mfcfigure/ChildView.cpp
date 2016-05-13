@@ -148,9 +148,13 @@ BOOL CChildView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 }
 
 void CChildView::OnNewFigure() {
+	
+	srand(time(NULL));
+
 	CRect rect;
 	GetClientRect(&rect);
 	m_Objects.push_back(new CMy2DObjectA6());
+	m_Objects.back()->SetColor(rand() % 253 + 1, rand() % 253 + 1, rand() % 253 + 1);
 	num_of_objects++;
 	Invalidate();
 }
